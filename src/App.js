@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import {
-  FaUniversity,
   FaChevronDown,
   FaChevronUp,
   FaSearch,
@@ -159,7 +158,6 @@ const App = () => {
                                 className="bg-white rounded-md p-4 shadow-sm"
                               >
                                 <div className="flex items-center mb-2">
-                                  <FaUniversity className="text-blue-600 mr-2" />
                                   <span className="font-medium">
                                     {bank.bankName}
                                   </span>
