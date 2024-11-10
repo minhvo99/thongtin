@@ -1,11 +1,8 @@
 import React, { useState, useMemo } from 'react';
-import {
-  FaChevronDown,
-  FaChevronUp,
-  FaSearch,
-} from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp, FaSearch, FaCopy } from 'react-icons/fa';
 import data from './data';
 import Pagination from './Pagination';
+import Swal from 'sweetalert2';
 
 let PageSize = 50;
 let dataSource;
@@ -24,6 +21,24 @@ const App = () => {
 
   const handleRowClick = (customerId) => {
     setExpandedRow(expandedRow === customerId ? null : customerId);
+  };
+
+  const handleCopyClick = async (text) => {
+    try {
+      await window.navigator.clipboard.writeText(text);
+      Swal.fire({
+        icon: 'success',
+          title: 'Copied!',
+          text: `Sao chép thành công!!!`,
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+      });
+    } catch (error) {
+      return;
+    }
   };
 
   const filteredCustomerData = dummyCustomerData.filter(
@@ -61,7 +76,10 @@ const App = () => {
         </div>
         <div className="mb-6 relative">
           {searchTerm ? (
-            <div className="text-sm text-gray-500">Tìm thấy {dataSource.length} trên tổng số {dummyCustomerData.length} hàng</div>
+            <div className="text-sm text-gray-500">
+              Tìm thấy {dataSource.length} trên tổng số{' '}
+              {dummyCustomerData.length} hàng
+            </div>
           ) : (
             <div className="text-sm text-gray-500"></div>
           )}
@@ -152,34 +170,53 @@ const App = () => {
                             Thông tin ngân hàng
                           </h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {customer.banks.map((bank) => (
+                            {customer?.banks.map((bank) => (
                               <div
                                 key={bank.bankId}
                                 className="bg-white rounded-md p-4 shadow-sm"
                               >
-                                <div className="flex items-center mb-2">
-                                  <span className="font-medium">
-                                    {bank.bankName}
-                                  </span>
-                                </div>
                                 <div className="text-sm text-gray-600 space-y-1">
-                                  <p>
+                                  <p className="flex items-center">
                                     <span className="font-medium">
                                       Số tài khoản:
                                     </span>{' '}
                                     {bank.accountNumber}
+                                    {bank.accountNumber && (
+                                      <FaCopy
+                                        onClick={() =>
+                                          handleCopyClick(bank.accountNumber)
+                                        }
+                                        className="pl-2 text-xl"
+                                      />
+                                    )}
                                   </p>
-                                  <p>
+                                  <p className="flex gap-2 items-center">
                                     <span className="font-medium">
                                       Người thụ hưởng:
                                     </span>{' '}
                                     {bank.beneficiary}
+                                    {bank.beneficiary && (
+                                      <FaCopy
+                                        onClick={() =>
+                                          handleCopyClick(bank.beneficiary)
+                                        }
+                                        className="pl-2 text-xl"
+                                      />
+                                    )}
                                   </p>
-                                  <p>
+                                  <p className="flex items-center">
                                     <span className="font-medium">
                                       Tên ngân hàng:
                                     </span>{' '}
                                     {bank?.CustomerBankName?.name}
+                                    {bank?.CustomerBankName?.name && (
+                                      <FaCopy
+                                        onClick={() =>
+                                          handleCopyClick(bank?.CustomerBankName?.name)
+                                        }
+                                        className="pl-2 text-xl"
+                                      />
+                                    )}
                                   </p>
                                 </div>
                               </div>

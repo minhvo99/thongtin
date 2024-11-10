@@ -745,6 +745,10 @@
   .pl-10 {
     padding-left: 2.5rem;
   }
+
+  .pl-2 {
+    padding-left: 0.35rem;
+  }
   
   .pr-4 {
     padding-right: 1rem;
